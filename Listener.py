@@ -15,8 +15,7 @@ class LeapListener(Leap.Listener):
 		self.thumbExtended = 'no'
 
 		#Right hand variables
-		self.noOfFingers 	= 0
-		self.refFrame 		= None
+		self.handHeight = 0.5
 
 		#Left hand variables
 		self.leftHandFingers = 0
@@ -55,8 +54,7 @@ class LeapListener(Leap.Listener):
 					Right hand = illumination controller
 					"""
 					if hand.is_right:
-						normalizedHeight = self.normalizeHeight(hand.palm_position.y)
-						print 'right hand'
+						self.handHeight = self.normalizeHeight(hand.palm_position.y)
 						
 					'''
 					Left hand = lamp controller
@@ -64,10 +62,7 @@ class LeapListener(Leap.Listener):
 					if hand.is_left:
 						fingers = hand.fingers
 						self.leftHandFingers = len(fingers.extended())
-						# print self.leftHandFingers
-						print 'left hand'
-				else:
-					print 'wait a minute... these are no hands'
+						# print self.leftHandFingerss
 
 
 
