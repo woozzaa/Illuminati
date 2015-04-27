@@ -32,18 +32,11 @@ class Application(Frame):
 		self.canvas = Canvas(self, width=400, height=400, bg='#ededed')
 		self.canvas.grid(row=1, column=0)
 
-		lamp1 = Lamp(self.canvas.create_oval(20,20,120,120, outline='darkgrey', fill='grey', width=1))
-		# lamp2 = Lamp()
-		# lamp3 = Lamp()
-		# lamp4 = Lamp()
-		# lamp5 = Lamp()
-
-		# lamp1 = 
-		# lamp2 = self.canvas.create_oval(280,20,380,120, outline='darkgrey', fill='grey', width=1)
-		# lamp3 = self.canvas.create_oval(20,280,120,380, outline='darkgrey', fill='grey', width=1)
-		# lamp4 = self.canvas.create_oval(280,280,380,380, outline='darkgrey', fill='grey', width=1)
-		# lamp5 = self.canvas.create_oval(150,150,250,250, outline='darkgrey', fill='grey', width=1)
-
+		lamp1 = Lamp(self.canvas.create_oval(20,20,140,140)  , self.canvas) #top left
+		lamp2 = Lamp(self.canvas.create_oval(270,20,390,140) , self.canvas) #top right
+		lamp3 = Lamp(self.canvas.create_oval(20,270,140,390) , self.canvas) #bottom left
+		lamp4 = Lamp(self.canvas.create_oval(270,270,390,390), self.canvas) #bottom right
+		lamp5 = Lamp(self.canvas.create_oval(140,140,260,260), self.canvas) #center
 
 
 		# """ create button, text and entry widget """
@@ -51,6 +44,9 @@ class Application(Frame):
 		
 		# """ Sets row, column and span. Sticky = west, ie left side """
 		# self.instruction.grid(row = 0, column = 0, columnspan = 2, sticky = W)
+		
+		self.changeButton = Button(self, text = 'change', command = lamp1.changeOpacity)
+		self.changeButton.grid(row=1, column=1, sticky=W)
 
 		# """ Wrap = tells what value will be displayed in the box """
 		self.text = Text(self, width = 50, height = 2, wrap = WORD)
@@ -69,6 +65,13 @@ class Application(Frame):
 		self.text.insert(1.0, textContent) 
 
 		self.after(100, self.reveal)
+
+	def changeLamp(self):
+		'''
+		Ta in höjd på högerhand, fingrar på vänster --> skicka till changeBrightness i rätt lampa
+		changeBrightness ändrar sedan storlek på cirkeln. Glöm ej mappa om 
+		'''
+		pass
 		
 
 	def quitApp(self):

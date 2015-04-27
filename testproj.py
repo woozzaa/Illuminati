@@ -2,7 +2,8 @@
 Actual working document
 Lab 3 in the makings
 
-todo: fix print in UI for self.finger_names
+TODO
+- instruktioner i Application.changeLamp()
 """
 # import os, sys, inspect, thread, time
 # src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
