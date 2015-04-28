@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys, time, thread
 sys.path.insert(0, '../../lib')
 import Leap

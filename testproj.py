@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Actual working document
 Lab 3 in the makings

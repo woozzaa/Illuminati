@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys, time, thread
 # sys.path.insert(0, '../../lib')
 # import Leap
@@ -19,6 +20,7 @@ class Application(Frame):
 		self.leap = LeapMotion()
 
 		self.reveal()
+		self.changeLamp()
 
 		#ends app on window close
 		master.protocol('WM_DELETE_WINDOW', self.quitApp) 
@@ -32,11 +34,11 @@ class Application(Frame):
 		self.canvas = Canvas(self, width=400, height=400, bg='#ededed')
 		self.canvas.grid(row=1, column=0)
 
-		lamp1 = Lamp(self.canvas.create_oval(20,20,140,140)  , self.canvas) #top left
-		lamp2 = Lamp(self.canvas.create_oval(270,20,390,140) , self.canvas) #top right
-		lamp3 = Lamp(self.canvas.create_oval(20,270,140,390) , self.canvas) #bottom left
-		lamp4 = Lamp(self.canvas.create_oval(270,270,390,390), self.canvas) #bottom right
-		lamp5 = Lamp(self.canvas.create_oval(140,140,260,260), self.canvas) #center
+		self.lamp1 = Lamp(self.canvas.create_oval(20,20,140,140)  , self.canvas) #top left
+		self.lamp2 = Lamp(self.canvas.create_oval(270,20,390,140) , self.canvas) #top right
+		self.lamp3 = Lamp(self.canvas.create_oval(20,270,140,390) , self.canvas) #bottom left
+		self.lamp4 = Lamp(self.canvas.create_oval(270,270,390,390), self.canvas) #bottom right
+		self.lamp5 = Lamp(self.canvas.create_oval(140,140,260,260), self.canvas) #center
 
 
 		# """ create button, text and entry widget """
@@ -45,7 +47,7 @@ class Application(Frame):
 		# """ Sets row, column and span. Sticky = west, ie left side """
 		# self.instruction.grid(row = 0, column = 0, columnspan = 2, sticky = W)
 		
-		self.changeButton = Button(self, text = 'change', command = lamp1.changeOpacity)
+		self.changeButton = Button(self, text = 'change', command = self.lamp1.changeOpacity)
 		self.changeButton.grid(row=1, column=1, sticky=W)
 
 		# """ Wrap = tells what value will be displayed in the box """
@@ -67,11 +69,24 @@ class Application(Frame):
 		self.after(100, self.reveal)
 
 	def changeLamp(self):
-		'''
-		Ta in höjd på högerhand, fingrar på vänster --> skicka till changeBrightness i rätt lampa
-		changeBrightness ändrar sedan storlek på cirkeln. Glöm ej mappa om 
-		'''
-		pass
+		
+		handHeight 		= self.leap.listener.handHeight
+		leftHandFingers = self.leap.listener.leftHandFingers
+
+		if leftHandFingers == 1   : self.lamp1.changeBrightness(handHeight)
+
+		elif leftHandFingers == 2 : self.lamp2.changeBrightness(handHeight)
+
+		elif leftHandFingers == 3 : self.lamp3.changeBrightness(handHeight)
+
+		elif leftHandFingers == 4 : self.lamp4.changeBrightness(handHeight)
+
+		elif leftHandFingers == 5 : self.lamp5.changeBrightness(handHeight)
+
+		else:
+			pass
+
+		self.after(100, self.changeLamp)
 		
 
 	def quitApp(self):

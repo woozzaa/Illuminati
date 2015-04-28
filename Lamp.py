@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import time
 
 class Lamp:
@@ -9,9 +10,21 @@ class Lamp:
 		# self.changeOpacity()
 
 	def changeBrightness(self, brightness):
-		#mappa om brightness
-		#diameter = 120px
-		self.canvas.coords(self.lamp, 280,20,380,120)
+		newCoords = self.getNewCoords(self.canvas.coords(self.lamp), brightness)
+		self.canvas.coords(self.lamp, newCoords[0], newCoords[1], newCoords[2], newCoords[3])
+
+	def getNewCoords(self, coords, brightness):
+		#diam = 120px
+
+		v1 = coords[0] #x0
+		v2 = coords[1] #x1
+		v3 = coords[2] #y0
+		v4 = coords[3] #y1
+
+		diff = (brightness * 120) / 2
+		for x in range(0,3):
+			v[x] = coords[x] + diff
+
 
 	def turnOn(self):
 		if not self.lit:
