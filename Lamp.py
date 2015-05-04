@@ -11,19 +11,46 @@ class Lamp:
 
 	def changeBrightness(self, brightness):
 		newCoords = self.getNewCoords(self.canvas.coords(self.lamp), brightness)
-		self.canvas.coords(self.lamp, newCoords[0], newCoords[1], newCoords[2], newCoords[3])
+		# x0 = int(newCoords[0])
+		# x1 = int(newCoords[1])
+		# y0 = int(newCoords[2])
+		# y1 = int(newCoords[3])
+		# self.canvas.coords(self.lamp, newCoords[0], newCoords[1], newCoords[2], newCoords[3])
+		# self.canvas.coords(self.lamp, x0, x1, y0, y1)
+
+		self.canvas.coords(self.lamp, newCoords)
 
 	def getNewCoords(self, coords, brightness):
 		#diam = 120px
 
-		v1 = coords[0] #x0
-		v2 = coords[1] #x1
-		v3 = coords[2] #y0
-		v4 = coords[3] #y1
+		# x0 = coords[0]
+		# x1 = coords[1]
+		# y0 = coords[2]
+		# y1 = coords[3]
 
-		diff = (brightness * 120) / 2
-		for x in range(0,3):
-			v[x] = coords[x] + diff
+		diff = int((brightness * 120) / 2)
+		'''
+			UNTRIED CHANGES! 
+			Done to perhaps solve the bug that only 
+			makes the circle grow, and instead decrease
+			in size when brightness is < 0.5
+		'''
+		if diff <= 0.5:
+			diff = -diff
+		# # print 'diff = ' + str(diff)
+		v = []
+		for x in range(0,4):
+			if x == 0 or x == 1 :
+				v.append(int(coords[x] - diff)) #bug here. Change size logix
+			else :
+				v.append(int(coords[x] + diff))
+
+
+		print 'v = ' + str(tuple(v))
+		return tuple(v)
+		
+		# tempstring =  ','.join(str(round(k, 2)) for k in v)
+
 
 
 	def turnOn(self):

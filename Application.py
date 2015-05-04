@@ -34,11 +34,11 @@ class Application(Frame):
 		self.canvas = Canvas(self, width=400, height=400, bg='#ededed')
 		self.canvas.grid(row=1, column=0)
 
-		self.lamp1 = Lamp(self.canvas.create_oval(20,20,140,140)  , self.canvas) #top left
-		self.lamp2 = Lamp(self.canvas.create_oval(270,20,390,140) , self.canvas) #top right
-		self.lamp3 = Lamp(self.canvas.create_oval(20,270,140,390) , self.canvas) #bottom left
-		self.lamp4 = Lamp(self.canvas.create_oval(270,270,390,390), self.canvas) #bottom right
-		self.lamp5 = Lamp(self.canvas.create_oval(140,140,260,260), self.canvas) #center
+		self.lamp1 = Lamp( self.canvas.create_oval(70,70,90,90)   , self.canvas) #top left
+		self.lamp2 = Lamp( self.canvas.create_oval(320,70,340,90) , self.canvas) #top right
+		self.lamp3 = Lamp( self.canvas.create_oval(70,320,90,340) , self.canvas) #bottom left
+		self.lamp4 = Lamp( self.canvas.create_oval(320,320,340,340), self.canvas) #bottom right
+		self.lamp5 = Lamp( self.canvas.create_oval(190,190,210,210), self.canvas) #center
 
 
 		# """ create button, text and entry widget """
@@ -72,19 +72,24 @@ class Application(Frame):
 		
 		handHeight 		= self.leap.listener.handHeight
 		leftHandFingers = self.leap.listener.leftHandFingers
+		print 'left fingers = ' + str(leftHandFingers) + ' right hand = ' + str(handHeight)
 
-		if leftHandFingers == 1   : self.lamp1.changeBrightness(handHeight)
+		if (handHeight !=  None) and (leftHandFingers != None):
 
-		elif leftHandFingers == 2 : self.lamp2.changeBrightness(handHeight)
+			if leftHandFingers == 1   : self.lamp1.changeBrightness(handHeight)
 
-		elif leftHandFingers == 3 : self.lamp3.changeBrightness(handHeight)
+			elif leftHandFingers == 2 : self.lamp2.changeBrightness(handHeight)
 
-		elif leftHandFingers == 4 : self.lamp4.changeBrightness(handHeight)
+			elif leftHandFingers == 3 : self.lamp3.changeBrightness(handHeight)
 
-		elif leftHandFingers == 5 : self.lamp5.changeBrightness(handHeight)
+			elif leftHandFingers == 4 : self.lamp4.changeBrightness(handHeight); print 'lamp 4'
+
+			elif leftHandFingers == 5 : self.lamp5.changeBrightness(handHeight); print 'lamp 5'
+
+			else : print 'no fingers stretched out'
 
 		else:
-			pass
+			print 'no valid finger'
 
 		self.after(100, self.changeLamp)
 		

@@ -16,10 +16,10 @@ class LeapListener(Leap.Listener):
 		self.thumbExtended = 'no'
 
 		#Right hand variables
-		self.handHeight = 0.5
+		self.handHeight = None
 
 		#Left hand variables
-		self.leftHandFingers = 0
+		self.leftHandFingers = None
 
 	'''def __init__(self):
 					Leap.Listener.__init__(self)
@@ -48,6 +48,9 @@ class LeapListener(Leap.Listener):
 			self.handName 		= 'No hands'
 			self.gestureType 	= 'No gesture'
 			self.fingerNames 	= 'No fingers'
+
+			self.handHeight 	= None
+			self.leftHandFingers = None
 		else:
 			for hand in frame.hands:
 				if hand.is_valid:
@@ -61,9 +64,10 @@ class LeapListener(Leap.Listener):
 					Left hand = lamp controller
 					'''
 					if hand.is_left:
-						fingers = hand.fingers
-						self.leftHandFingers = len(fingers.extended())
-						# print self.leftHandFingerss
+						# fingers = hand.fingers
+						self.leftHandFingers = len(hand.fingers.extended())
+						if self.leftHandFingers < 1:
+							self.leftHandFingers = None
 
 
 
