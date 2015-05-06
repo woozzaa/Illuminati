@@ -64,7 +64,6 @@ class LeapListener(Leap.Listener):
 					Left hand = lamp controller
 					'''
 					if hand.is_left:
-						# fingers = hand.fingers
 						self.leftHandFingers = len(hand.fingers.extended())
 						if self.leftHandFingers < 1:
 							self.leftHandFingers = None
@@ -73,7 +72,7 @@ class LeapListener(Leap.Listener):
 
 	def normalizeHeight(self, height):	#highest = 450, lowest = 30
 		normalizeFactor = 350
-		normalizedVector = height / normalizeFactor
+		normalizedVector = (height-50) / normalizeFactor
 
 		if height > 400 or normalizedVector > 1:
 			normalizedVector = 1

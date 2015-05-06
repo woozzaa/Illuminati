@@ -32,13 +32,22 @@ class Application(Frame):
 		self.instruction.grid(row=0, column=0, columnspan=2, sticky=W)
 
 		self.canvas = Canvas(self, width=400, height=400, bg='#ededed')
-		self.canvas.grid(row=1, column=0)
+		self.canvas.grid(row=1, column=0, sticky=W)
 
-		self.lamp1 = Lamp( self.canvas.create_oval(70,70,90,90)   , self.canvas) #top left
-		self.lamp2 = Lamp( self.canvas.create_oval(320,70,340,90) , self.canvas) #top right
-		self.lamp3 = Lamp( self.canvas.create_oval(70,320,90,340) , self.canvas) #bottom left
-		self.lamp4 = Lamp( self.canvas.create_oval(320,320,340,340), self.canvas) #bottom right
-		self.lamp5 = Lamp( self.canvas.create_oval(190,190,210,210), self.canvas) #center
+		self.scale1 = Scale(self, from_=0, to=100); self.scale1.grid(row=2, column=0, sticky=W)
+		self.scale2 = Scale(self, from_=0, to=100); self.scale2.grid(row=2, column=0, sticky=W, padx=110)
+		self.scale3 = Scale(self, from_=0, to=100); self.scale3.grid(row=2, column=0, sticky=W, padx=220)
+		self.scale4 = Scale(self, from_=0, to=100); self.scale4.grid(row=2, column=0, sticky=W, padx=330)
+		self.scale5 = Scale(self, from_=0, to=100); self.scale5.grid(row=2, column=0, sticky=W, padx=440)
+
+		self.lamp1 = Lamp(self.scale1, self.canvas, self.canvas.create_oval(70,70,90,90)) #top left
+		self.lamp2 = Lamp(self.scale2, self.canvas, self.canvas.create_oval(320,70,340,90)) #top right
+		self.lamp3 = Lamp(self.scale3, self.canvas, self.canvas.create_oval(70,320,90,340)) #bottom left
+		self.lamp4 = Lamp(self.scale4, self.canvas, self.canvas.create_oval(320,320,340,340)) #bottom right
+		self.lamp5 = Lamp(self.scale5, self.canvas, self.canvas.create_oval(190,190,210,210)) #center
+
+		self.allLamps = [self.lamp1, self.lamp2, self.lamp3, self.lamp4, self.lamp5]
+		print str(self.allLamps)
 
 
 		# """ create button, text and entry widget """
@@ -47,8 +56,6 @@ class Application(Frame):
 		# """ Sets row, column and span. Sticky = west, ie left side """
 		# self.instruction.grid(row = 0, column = 0, columnspan = 2, sticky = W)
 		
-		self.changeButton = Button(self, text = 'change', command = self.lamp1.changeOpacity)
-		self.changeButton.grid(row=1, column=1, sticky=W)
 
 		# """ Wrap = tells what value will be displayed in the box """
 		self.text = Text(self, width = 50, height = 2, wrap = WORD)
@@ -72,19 +79,19 @@ class Application(Frame):
 		
 		handHeight 		= self.leap.listener.handHeight
 		leftHandFingers = self.leap.listener.leftHandFingers
-		print 'left fingers = ' + str(leftHandFingers) + ' right hand = ' + str(handHeight)
+		# print 'left fingers = ' + str(leftHandFingers) + ' right hand = ' + str(handHeight)
 
 		if (handHeight !=  None) and (leftHandFingers != None):
 
-			if leftHandFingers == 1   : self.lamp1.changeBrightness(handHeight)
+			if leftHandFingers == 1   : self.changeColor(self.lamp1); self.lamp1.changeBrightness(handHeight)
 
-			elif leftHandFingers == 2 : self.lamp2.changeBrightness(handHeight)
+			elif leftHandFingers == 2 : self.changeColor(self.lamp2); self.lamp2.changeBrightness(handHeight)
 
-			elif leftHandFingers == 3 : self.lamp3.changeBrightness(handHeight)
+			elif leftHandFingers == 3 : self.changeColor(self.lamp3); self.lamp3.changeBrightness(handHeight)
 
-			elif leftHandFingers == 4 : self.lamp4.changeBrightness(handHeight); print 'lamp 4'
+			elif leftHandFingers == 4 : self.changeColor(self.lamp4); self.lamp4.changeBrightness(handHeight); 
 
-			elif leftHandFingers == 5 : self.lamp5.changeBrightness(handHeight); print 'lamp 5'
+			elif leftHandFingers == 5 : self.changeColor(self.lamp5); self.lamp5.changeBrightness(handHeight); 
 
 			else : print 'no fingers stretched out'
 
@@ -92,7 +99,13 @@ class Application(Frame):
 			print 'no valid finger'
 
 		self.after(100, self.changeLamp)
-		
+
+	def changeColor(self, activeLamp):
+		for lamp in self.allLamps:
+			if lamp is not activeLamp:
+				lamp.changeColor('gray')
+			else:
+				lamp.changeColor('green')
 
 	def quitApp(self):
 		# self.controller.remove_listener(self.listener)
