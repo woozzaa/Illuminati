@@ -31,7 +31,7 @@ class Application(Frame):
 		self.instruction = Label(self, text='Lamps :')
 		self.instruction.grid(row=0, column=0, columnspan=2, sticky=W)
 
-		self.canvas = Canvas(self, width=400, height=400, bg='#ededed')
+		self.canvas = Canvas(self, width=500, height=500, bg='#ededed')
 		self.canvas.grid(row=1, column=0, sticky=W)
 
 		self.scale1 = Scale(self, from_=0, to=100); self.scale1.grid(row=2, column=0, sticky=W)
@@ -40,22 +40,14 @@ class Application(Frame):
 		self.scale4 = Scale(self, from_=0, to=100); self.scale4.grid(row=2, column=0, sticky=W, padx=330)
 		self.scale5 = Scale(self, from_=0, to=100); self.scale5.grid(row=2, column=0, sticky=W, padx=440)
 
-		self.lamp1 = Lamp(self.scale1, self.canvas, self.canvas.create_oval(70,70,90,90)) #top left
-		self.lamp2 = Lamp(self.scale2, self.canvas, self.canvas.create_oval(320,70,340,90)) #top right
-		self.lamp3 = Lamp(self.scale3, self.canvas, self.canvas.create_oval(70,320,90,340)) #bottom left
-		self.lamp4 = Lamp(self.scale4, self.canvas, self.canvas.create_oval(320,320,340,340)) #bottom right
-		self.lamp5 = Lamp(self.scale5, self.canvas, self.canvas.create_oval(190,190,210,210)) #center
+		self.lamp1 = Lamp(self.scale1, self.canvas, self.canvas.create_polygon(90,90, 110,90, 110,110, 90,110)) #top left
+		self.lamp2 = Lamp(self.scale2, self.canvas, self.canvas.create_polygon(400,90, 420,90, 420,110, 400,110)) #top right
+		self.lamp3 = Lamp(self.scale3, self.canvas, self.canvas.create_polygon(90,400, 110,400, 110,420, 90,420)) #bottom left
+		self.lamp4 = Lamp(self.scale4, self.canvas, self.canvas.create_polygon(400,400, 420,400, 420,420, 400,420)) #bottom right
+		self.lamp5 = Lamp(self.scale5, self.canvas, self.canvas.create_polygon(240,240, 260,240, 260,260, 240,260)) #center
 
 		self.allLamps = [self.lamp1, self.lamp2, self.lamp3, self.lamp4, self.lamp5]
-		print str(self.allLamps)
-
-
-		# """ create button, text and entry widget """
-		# self.instruction = Label(self, text = 'Status')
-		
-		# """ Sets row, column and span. Sticky = west, ie left side """
-		# self.instruction.grid(row = 0, column = 0, columnspan = 2, sticky = W)
-		
+		# print str(self.allLamps)
 
 		# """ Wrap = tells what value will be displayed in the box """
 		self.text = Text(self, width = 50, height = 2, wrap = WORD)
@@ -69,7 +61,7 @@ class Application(Frame):
 		""" Display message based on password typed in """
 		#0.0 is position (row, column)
 
-		textContent = 'handheight : %s \nextended fingers: %s' % (self.leap.listener.handHeight, self.leap.listener.leftHandFingers)
+		textContent = 'handheight : %s \nextended fingers: %s' % (self.leap.listener.handHeight, self.leap.listener.rightHandFingers)
 		self.text.delete(0.0, END)
 		self.text.insert(1.0, textContent) 
 
@@ -77,33 +69,34 @@ class Application(Frame):
 
 	def changeLamp(self):
 		
-		handHeight 		= self.leap.listener.handHeight
-		leftHandFingers = self.leap.listener.leftHandFingers
-		# print 'left fingers = ' + str(leftHandFingers) + ' right hand = ' + str(handHeight)
+		handHeight 			= self.leap.listener.handHeight
+		rightHandFingers 	= self.leap.listener.rightHandFingers
+		rightHandRoll 		= self.leap.listener.rightHandRoll
 
-		if (handHeight !=  None) and (leftHandFingers != None):
+		if (handHeight !=  None) and (rightHandFingers != None):
 
-			if leftHandFingers == 1   : self.changeColor(self.lamp1); self.lamp1.changeBrightness(handHeight)
+			if rightHandFingers == 1   : self.changeColor(self.lamp1); self.lamp1.changeLampAttributes(handHeight, rightHandRoll)
 
-			elif leftHandFingers == 2 : self.changeColor(self.lamp2); self.lamp2.changeBrightness(handHeight)
+			elif rightHandFingers == 2 : self.changeColor(self.lamp2); self.lamp2.changeLampAttributes(handHeight, rightHandRoll)
 
-			elif leftHandFingers == 3 : self.changeColor(self.lamp3); self.lamp3.changeBrightness(handHeight)
+			elif rightHandFingers == 3 : self.changeColor(self.lamp3); self.lamp3.changeLampAttributes(handHeight, rightHandRoll)
 
-			elif leftHandFingers == 4 : self.changeColor(self.lamp4); self.lamp4.changeBrightness(handHeight); 
+			elif rightHandFingers == 4 : self.changeColor(self.lamp4); self.lamp4.changeLampAttributes(handHeight, rightHandRoll)
 
-			elif leftHandFingers == 5 : self.changeColor(self.lamp5); self.lamp5.changeBrightness(handHeight); 
+			elif rightHandFingers == 5 : self.changeColor(self.lamp5); self.lamp5.changeLampAttributes(handHeight, rightHandRoll)
 
 			else : print 'no fingers stretched out'
 
 		else:
 			print 'no valid finger'
+			self.changeColor(None)
 
 		self.after(100, self.changeLamp)
 
 	def changeColor(self, activeLamp):
 		for lamp in self.allLamps:
 			if lamp is not activeLamp:
-				lamp.changeColor('gray')
+				lamp.changeColor('darkgray')
 			else:
 				lamp.changeColor('green')
 

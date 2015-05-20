@@ -22,7 +22,7 @@ from Application import Application
 def main():
 	root = Tk()
 	root.title('password')
-	root.geometry('850x550') # Width x Height
+	root.geometry('850x750') # Width x Height
 	app = Application(root)
 	root.mainloop()
 

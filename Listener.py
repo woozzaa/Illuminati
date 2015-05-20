@@ -8,18 +8,21 @@ class LeapListener(Leap.Listener):
 	""" Listener for data from leapmotion """
 
 	def setup(self, parent):
-		self.parent = parent
-		self.fingerNameList = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
-		self.gestureType 	= 'no status available'
-		self.handName 		= 'no hand'
-		self.fingerNames 	= 'no fingers'
-		self.thumbExtended = 'no'
+		self.parent 			= parent
+		self.fingerNameList 	= ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
+		self.gestureType 		= 'no status available'
+		self.handName 			= 'no hand'
+		self.fingerNames 		= 'no fingers'
+		self.thumbExtended 		= 'no'
 
 		#Right hand variables
-		self.handHeight = None
+		self.handHeight 		= None
+		self.rightHandFingers 	= None
+		self.rightHandRoll		= None
 
 		#Left hand variables
-		self.leftHandFingers = None
+		
+		
 
 	'''def __init__(self):
 					Leap.Listener.__init__(self)
@@ -50,7 +53,8 @@ class LeapListener(Leap.Listener):
 			self.fingerNames 	= 'No fingers'
 
 			self.handHeight 	= None
-			self.leftHandFingers = None
+			self.rightHandFingers = None
+			self.rightHandRoll	= None
 		else:
 			for hand in frame.hands:
 				if hand.is_valid:
@@ -59,19 +63,23 @@ class LeapListener(Leap.Listener):
 					"""
 					if hand.is_right:
 						self.handHeight = self.normalizeHeight(hand.palm_position.y)
+						self.rightHandFingers = len(hand.fingers.extended())
+						self.rightHandRoll = hand.palm_normal.roll
+
+						if self.rightHandFingers < 1:
+							self.rightHandFingers = None
 						
 					'''
 					Left hand = lamp controller
 					'''
 					if hand.is_left:
-						self.leftHandFingers = len(hand.fingers.extended())
-						if self.leftHandFingers < 1:
-							self.leftHandFingers = None
+						pass
+						# self.leftHandYaw = hand.direction.yaw
 
 
 
 	def normalizeHeight(self, height):	#highest = 450, lowest = 30
-		normalizeFactor = 350
+		normalizeFactor = 300
 		normalizedVector = (height-50) / normalizeFactor
 
 		if height > 400 or normalizedVector > 1:
