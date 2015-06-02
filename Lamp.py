@@ -1,13 +1,16 @@
 import time
 
 '''
-Inits lamp object
+Initiates lamp object
 '''
 class Lamp:
-	def __init__(self, scale, canvas, lamp):
+	def __init__(self, scale, canvas, lamp, warningTextField):
 		self.scale 	= scale
 		self.lamp 	= lamp
 		self.canvas = canvas
+		self.roll 	= None
+		self.startVar = False
+		self.warningTextField = warningTextField
 		
 		self.originalCoords = self.canvas.coords(self.lamp)
 		self.scale.config(orient='horizontal', sliderlength=10)
@@ -15,12 +18,34 @@ class Lamp:
 		self.changeColor('gray')
 
 
+
 	'''
 	changes lamp attributes, such as brightness and angle
 	'''
 	def changeLampAttributes(self, brightness, roll):
-		self.changeBrightness(brightness)
-		self.changeDirection(roll)
+		brightness = int(brightness*100)
+
+		if self.startVar is False:
+			self.changeBrightness(brightness)
+			self.changeDirection(roll)
+			self.startVar = True
+
+		print 'brightness = ' + str(brightness)
+		scaleVal = self.scale.get()
+		if (brightness > (scaleVal - 5) and brightness < (scaleVal + 5)):
+			if (roll > (self.roll - 0.5) and roll < (self.roll + 0.5)):
+				self.changeBrightness(brightness)
+				self.changeDirection(roll)
+			else : print 'hand in height range, not in roll range'
+		else : print 'hand not in height range'
+		
+
+		
+	# THIS FUNCTION IS NOT WORKING; THEREFORE INACTIVE
+	# def changeWarningtext(self, warningText):
+	# 	warningText = 'Message : %s' % (warningText) 
+	# 	self.warningTextField.delete(0.0, END)
+	# 	self.warningTextField.insert(1.0, warningText)
 
 
 
@@ -29,8 +54,7 @@ class Lamp:
 	Value depends on scale
 	'''
 	def changeBrightness(self, brightness):
-		val = round(brightness*50, 0)
-		self.scale.set(int(brightness*100))
+		self.scale.set(brightness)
 		self.changeIllumination()
 
 
@@ -72,6 +96,7 @@ class Lamp:
 		
 		if roll > 1 : roll = 1
 		if roll < -1 : roll = -1
+		self.roll = roll
 
 		roll = -round(roll*50, 0)
 		activeCoords = self.canvas.coords(self.lamp)
@@ -95,13 +120,3 @@ class Lamp:
 		else : v = activeCoords
 
 		self.canvas.coords(self.lamp, tuple(v))
-
-
-
-# For the old, circular lamp GUI
-# 	if x == 0 or x == 1:
-# 		v.append(self.originalCoords[x] - scaleVal)
-# 	else:
-# 		v.append(self.originalCoords[x] + scaleVal)
-
-

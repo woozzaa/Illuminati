@@ -5,7 +5,7 @@ import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
 class LeapListener(Leap.Listener):
-	""" Listener for data from leapmotion """
+	""" Listener for the data from leapmotion """
 
 	def setup(self, parent):
 		#General variables
@@ -31,7 +31,9 @@ class LeapListener(Leap.Listener):
 		self.leftHandFingers 	= None
 		self.lampChangeBool 	= True
 
-	#when connecting Leap Motion
+	'''
+	Will be ran when programs starts up and connects to leap motion device
+	'''
 	def on_connect(self, controller):
 		self.gestureType = 'connected'
 		'''
@@ -42,7 +44,9 @@ class LeapListener(Leap.Listener):
 		# controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP)
 		# controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP)	
 		
-	#runs when frames available
+	'''
+	function for frame analysis
+	'''
 	def on_frame(self, controller):
 
 		frame = controller.frame()
@@ -90,7 +94,8 @@ class LeapListener(Leap.Listener):
 						self.leftHandRoll 		= hand.palm_normal.roll
 
 						'''
-						Built-in gesture types changes lamp
+						Built-in gesture types changes lamp. 
+						Inactive for the moment. 
 						'''
 						# for gesture in frame.gestures():
 						# 	if gesture.type is Leap.Gesture.TYPE_SCREEN_TAP:
@@ -99,7 +104,7 @@ class LeapListener(Leap.Listener):
 						# 		print 'number = ' + str(self.leftHandLampNumber)
 
 						'''
-						Closing hand changes lamp
+						Closing the hand will change lamp. 
 						'''
 						if self.leftHandFingers < 1:
 							if self.lampChangeBool:
@@ -112,7 +117,9 @@ class LeapListener(Leap.Listener):
 							self.lampChangeBool = True
 
 
-
+	'''
+	Normalizes the height of the hand from the leap motion
+	'''
 	def normalizeHeight(self, height):	#highest = 450, lowest = 30
 		normalizeFactor = 300
 		normalizedVector = (height-50) / normalizeFactor
@@ -125,7 +132,9 @@ class LeapListener(Leap.Listener):
 
 
 
-	#runs on application shutdown
+	'''
+	runs on application shutdown
+	'''
 	def on_exit(self, controller):
 		self.controller.remove_listener(self.listener)
 		print 'exited'
