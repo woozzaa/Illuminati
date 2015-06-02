@@ -21,10 +21,13 @@ from Application import Application
 
 def main():
 	root = Tk()
-	root.title('password')
+	root.title('Illumination Project')
 	root.geometry('850x750') # Width x Height
 	app = Application(root)
-	root.mainloop()
+	try:
+		root.mainloop()
+	except KeyboardInterrupt:
+		print 'exited'
 
 if __name__ == "__main__":
 	main()

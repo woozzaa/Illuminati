@@ -44,7 +44,7 @@ class Lamp:
 		scaleVal = self.scale.get() * 0.8
 		sizeConstant = 0.25
 
-		print 'scaleVal = ' + str(scaleVal)
+		# print 'scaleVal = ' + str(scaleVal)
 		
 		for x in range(0,8):
 			if x == 0 or x == 6:   v.append(self.originalCoords[x] - (scaleVal * sizeConstant))
@@ -76,7 +76,7 @@ class Lamp:
 		roll = -round(roll*50, 0)
 		activeCoords = self.canvas.coords(self.lamp)
 
-		print 'roll = ' + str(roll)
+		# print 'roll = ' + str(roll)
 
 		if roll > 0.2:
 			for x in range(0,8):
