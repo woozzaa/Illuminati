@@ -79,7 +79,7 @@ class Application(Frame):
 		framerate 	= round(self.leap.listener.framerate, 4)
 
 		if rightHandHeight != None : 
-			handHeight 	= round(handHeight, 4)
+			rightHandHeight 	= round(rightHandHeight, 4)
 			rightPitch 	= round(rightPitch, 3)
 			rightYaw 	= round(rightYaw, 3)
 			rightRoll 	= round(rightRoll, 3)
